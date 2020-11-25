@@ -7,6 +7,7 @@ class Project with ChangeNotifier {
   DateTime doneDate;
   final String creatorEmail;
   final List<String> participantEmails;
+  bool done;
 
   Project({
     @required this.name,

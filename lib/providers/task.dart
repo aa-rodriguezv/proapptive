@@ -17,6 +17,7 @@ class Task with ChangeNotifier {
   final List<String> asigneesEmail;
   final String upperTask;
   final String projectName;
+  bool done;
 
   static final Map<TaskCategory, IconData> iconPerCategoryDict = {
     TaskCategory.Meeting: Icons.meeting_room,
