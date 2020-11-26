@@ -17,6 +17,7 @@ class Task with ChangeNotifier {
   final List<String> asigneesEmail;
   final String upperTask;
   final String projectName;
+  final TaskCategory type;
   bool done;
 
   static final Map<TaskCategory, IconData> iconPerCategoryDict = {
@@ -31,6 +32,7 @@ class Task with ChangeNotifier {
     @required this.creationDate,
     @required this.terminationDate,
     @required this.creatorEmail,
+    @required this.type,
     this.asigneesEmail,
     this.upperTask,
     this.projectName,
