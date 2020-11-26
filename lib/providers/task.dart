@@ -23,7 +23,7 @@ class Task with ChangeNotifier {
     TaskCategory.Meeting: Icons.meeting_room,
     TaskCategory.Routine: Icons.timelapse,
     TaskCategory.Step: Icons.account_tree,
-    TaskCategory.Extraordinary: Icons.extension,
+    TaskCategory.Extraordinary: Icons.flag,
   };
 
   Task({
