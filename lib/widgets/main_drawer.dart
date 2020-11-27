@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proapptive/screens/achievements_screen.dart';
 import 'package:proapptive/screens/awards_screen.dart';
+import 'package:proapptive/screens/tasks_complete_overview_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   Widget _buildPageAccess(
@@ -37,12 +38,18 @@ class MainDrawer extends StatelessWidget {
           _buildPageAccess(
             context,
             Icons.home_work,
-            'Principal',
+            'Proapptive',
             '/',
           ),
           _buildPageAccess(
             context,
-            Icons.list_alt_rounded,
+            Icons.featured_play_list,
+            'Tareas',
+            TasksCompleteOverviewScreen.routeName,
+          ),
+          _buildPageAccess(
+            context,
+            Icons.list_alt,
             'Logros',
             AchievementsScreen.routeName,
           ),

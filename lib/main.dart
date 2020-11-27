@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:proapptive/providers/tasks_provider.dart';
 import 'package:proapptive/screens/achievements_screen.dart';
 import 'package:proapptive/screens/awards_screen.dart';
+import 'package:proapptive/screens/tasks_complete_overview_screen.dart';
 import 'package:proapptive/screens/tasks_overview_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,42 +15,66 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.red,
-        accentColor: Colors.redAccent,
-        fontFamily: 'Quicksand',
-        textTheme: TextTheme(
-          headline1: TextStyle(
-            fontFamily: 'Raleway',
-            fontSize: 20,
-            fontWeight: FontWeight.w900,
-            color: Colors.black,
-          ),
-          bodyText1: TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w500,
-          ),
-          bodyText2: TextStyle(
-            fontSize: 8,
-          ),
-          overline: TextStyle(
-            fontSize: 6,
-            fontWeight: FontWeight.w700,
-          ),
-          caption: TextStyle(
-            fontSize: 14,
-            fontFamily: 'Raleway',
-            fontWeight: FontWeight.w700,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => TasksProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: Colors.red,
+          accentColor: Colors.redAccent,
+          fontFamily: 'Quicksand',
+          textTheme: TextTheme(
+            headline1: TextStyle(
+              fontFamily: 'Raleway',
+              fontSize: 20,
+              fontWeight: FontWeight.w900,
+              color: Colors.black,
+            ),
+            headline2: TextStyle(
+              fontFamily: 'Raleway',
+              fontSize: 15,
+              fontWeight: FontWeight.normal,
+              color: Colors.black,
+            ),
+            bodyText1: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w500,
+            ),
+            bodyText2: TextStyle(
+              fontSize: 8,
+            ),
+            overline: TextStyle(
+              fontSize: 6,
+              fontWeight: FontWeight.w700,
+            ),
+            caption: TextStyle(
+              fontSize: 14,
+              fontFamily: 'Raleway',
+              fontWeight: FontWeight.w700,
+            ),
+            headline3: TextStyle(
+              fontFamily: 'OpenSans',
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            headline4: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 10,
+            ),
           ),
         ),
+        home: TasksOverviewScreen(),
+        routes: {
+          AchievementsScreen.routeName: (ctx) => AchievementsScreen(),
+          AwardsScreen.routeName: (ctx) => AwardsScreen(),
+          TasksCompleteOverviewScreen.routeName: (ctx) =>
+              TasksCompleteOverviewScreen(),
+        },
       ),
-      home: TasksOverviewScreen(),
-      routes: {
-        AchievementsScreen.routeName: (ctx) => AchievementsScreen(),
-        AwardsScreen.routeName: (ctx) => AwardsScreen(),
-      },
     );
   }
 }

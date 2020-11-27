@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 enum TaskCategory {
   Meeting,
   Routine,
-  Step,
   Extraordinary,
+  Step,
 }
 
 class Task with ChangeNotifier {
+  final String id;
   final String name;
   final DateTime creationDate;
   final DateTime terminationDate;
@@ -28,6 +29,7 @@ class Task with ChangeNotifier {
   };
 
   Task({
+    @required this.id,
     @required this.name,
     @required this.creationDate,
     @required this.terminationDate,
@@ -36,5 +38,12 @@ class Task with ChangeNotifier {
     this.asigneesEmail,
     this.upperTask,
     this.projectName,
+    this.done = false,
   });
+
+  void toggleDone() {
+    this.done = !this.done;
+    doneDate = done ? DateTime.now() : null;
+    notifyListeners();
+  }
 }
