@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:proapptive/providers/auth.dart';
 import 'package:proapptive/screens/achievements_screen.dart';
 import 'package:proapptive/screens/awards_screen.dart';
 import 'package:proapptive/screens/tasks_complete_overview_screen.dart';
+import 'package:provider/provider.dart';
 
 class MainDrawer extends StatelessWidget {
   Widget _buildPageAccess(
-      BuildContext context, IconData icon, String title, String routeName) {
+      BuildContext context, IconData icon, String title, String routeName,
+      {bool logout = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: ListTile(
@@ -20,6 +23,9 @@ class MainDrawer extends StatelessWidget {
         ),
         onTap: () {
           Navigator.of(context).popAndPushNamed(routeName);
+          if (logout) {
+            Provider.of<Auth>(context, listen: false).logout();
+          }
         },
       ),
     );
@@ -58,6 +64,14 @@ class MainDrawer extends StatelessWidget {
             Icons.local_activity,
             'Recompensas',
             AwardsScreen.routeName,
+          ),
+          Divider(),
+          _buildPageAccess(
+            context,
+            Icons.exit_to_app_outlined,
+            'Cerrar Sesión',
+            '/',
+            logout: true,
           ),
         ],
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:proapptive/providers/task.dart';
 
 class TasksProvider with ChangeNotifier {
+  /*
   List<Task> _tasks = [
     Task(
       id: '1',
@@ -40,6 +41,21 @@ class TasksProvider with ChangeNotifier {
       asigneesEmail: ['angel@kof.com.mx'],
     ),
   ];
+  */
+
+  String _token;
+  String _userEmail;
+  List<Task> _tasks;
+
+  TasksProvider(
+    this._token,
+    this._userEmail,
+    this._tasks,
+  );
+
+  List<Task> get tasks {
+    return [..._tasks];
+  }
 
   List<Task> get allMyTasks {
     return _tasks

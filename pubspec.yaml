@@ -31,6 +31,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   intl: ^0.16.1
   http: ^0.12.2
+  shared_preferences: ^0.5.12+4
 
 dev_dependencies:
   flutter_test:
@@ -59,6 +60,9 @@ flutter:
     - assets/images/kokorico.jpg
     - assets/images/panpaya.png
     - assets/images/free.jpg
+    - assets/images/original.png
+    - assets/images/BigBanner.jpg
+    - assets/images/BigBanner.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
