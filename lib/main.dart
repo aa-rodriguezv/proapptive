@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           ),
           update: (context, auth, previous) => TasksProvider(
             auth.token,
-            auth.userEmail,
+            auth.userId,
             previous.tasks,
           ),
         ),

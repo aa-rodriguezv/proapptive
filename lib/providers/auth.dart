@@ -10,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Auth with ChangeNotifier {
   String _token;
   DateTime _expiryDate;
-  String _email;
   String _userId;
   Timer _authTimer;
 
@@ -36,7 +35,6 @@ class Auth with ChangeNotifier {
       }
       _token = responseData['idToken'];
       _userId = responseData['localId'];
-      _email = email;
       _expiryDate = DateTime.now().add(
         Duration(
           seconds: int.parse(
@@ -51,7 +49,6 @@ class Auth with ChangeNotifier {
         'token': _token,
         'userId': _userId,
         'expiryDate': _expiryDate.toIso8601String(),
-        'email': _email,
       });
       prefs.setString(
         'userData',
@@ -98,7 +95,6 @@ class Auth with ChangeNotifier {
     _token = extractedUserData['token'];
     _expiryDate = expiration;
     _userId = extractedUserData['userId'];
-    _email = extractedUserData['email'];
     notifyListeners();
     _autoLogout();
     return true;
@@ -152,9 +148,5 @@ class Auth with ChangeNotifier {
 
   String get userId {
     return _userId;
-  }
-
-  String get userEmail {
-    return _email;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:proapptive/providers/auth.dart';
 import 'package:proapptive/providers/task.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +8,7 @@ class TaskOverviewItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<Task>(context);
+    final Auth auth = Provider.of<Auth>(context, listen: false);
 
     return ListTile(
       leading: CircleAvatar(
@@ -29,7 +31,8 @@ class TaskOverviewItem extends StatelessWidget {
           data.done ? Icons.check_box : Icons.check_box_outlined,
         ),
         onPressed: () {
-          Provider.of<Task>(context, listen: false).toggleDone();
+          Provider.of<Task>(context, listen: false)
+              .toggleDone(auth.token, auth.userId);
         },
       ),
     );

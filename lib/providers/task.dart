@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 enum TaskCategory {
   Meeting,
@@ -14,11 +17,11 @@ class Task with ChangeNotifier {
   final DateTime creationDate;
   final DateTime terminationDate;
   DateTime doneDate;
-  final String creatorEmail;
-  final List<String> asigneesEmail;
+  final String creatorID;
   final String upperTask;
   final String projectName;
   final TaskCategory type;
+  bool assignedTo;
   bool done;
 
   static final Map<TaskCategory, IconData> iconPerCategoryDict = {
@@ -33,17 +36,47 @@ class Task with ChangeNotifier {
     @required this.name,
     @required this.creationDate,
     @required this.terminationDate,
-    @required this.creatorEmail,
+    @required this.creatorID,
     @required this.type,
-    this.asigneesEmail,
     this.upperTask,
     this.projectName,
+    this.assignedTo,
     this.done = false,
+    this.doneDate,
   });
 
-  void toggleDone() {
-    this.done = !this.done;
-    doneDate = done ? DateTime.now() : null;
-    notifyListeners();
+  void toggleDone(String token, String userId) async {
+    final url =
+        'https://proapptive-a6824.firebaseio.com/userTasks/$userId/$id.json?auth=$token';
+    try {
+      final response = await http.put(
+        url,
+        body: json.encode(
+          {
+            'done': !done,
+            'doneDate': DateTime.now().toIso8601String(),
+          },
+        ),
+      );
+      done = !done;
+      if (done) {
+        doneDate = DateTime.now();
+      } else {
+        doneDate = null;
+      }
+
+      if (response.statusCode >= 400) {
+        done = !done;
+        if (done) {
+          doneDate = DateTime.now();
+        } else {
+          doneDate = null;
+        }
+      }
+      notifyListeners();
+    } catch (error) {
+      notifyListeners();
+      throw error;
+    }
   }
 }
