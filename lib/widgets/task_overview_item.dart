@@ -4,7 +4,14 @@ import 'package:proapptive/providers/auth.dart';
 import 'package:proapptive/providers/task.dart';
 import 'package:provider/provider.dart';
 
-class TaskOverviewItem extends StatelessWidget {
+class TaskOverviewItem extends StatefulWidget {
+  @override
+  _TaskOverviewItemState createState() => _TaskOverviewItemState();
+}
+
+class _TaskOverviewItemState extends State<TaskOverviewItem> {
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<Task>(context);
@@ -26,15 +33,29 @@ class TaskOverviewItem extends StatelessWidget {
         'Para: ${DateFormat('HH:mm, dd/MM.').format(data.terminationDate)}',
         style: Theme.of(context).textTheme.headline4,
       ),
-      trailing: IconButton(
-        icon: Icon(
-          data.done ? Icons.check_box : Icons.check_box_outlined,
-        ),
-        onPressed: () {
-          Provider.of<Task>(context, listen: false)
-              .toggleDone(auth.token, auth.userId);
-        },
-      ),
+      trailing: _isLoading
+          ? CircularProgressIndicator()
+          : IconButton(
+              icon: Icon(
+                data.done ? Icons.check_box : Icons.check_box_outlined,
+              ),
+              onPressed: () {
+                setState(() {
+                  _isLoading = true;
+                });
+                Provider.of<Task>(context, listen: false)
+                    .toggleDone(auth.token, auth.userId)
+                    .then(
+                  (value) {
+                    setState(
+                      () {
+                        _isLoading = false;
+                      },
+                    );
+                  },
+                );
+              },
+            ),
     );
   }
 }

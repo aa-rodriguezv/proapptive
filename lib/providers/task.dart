@@ -45,7 +45,7 @@ class Task with ChangeNotifier {
     this.doneDate,
   });
 
-  void toggleDone(String token, String userId) async {
+  Future<void> toggleDone(String token, String userId) async {
     final url =
         'https://proapptive-a6824.firebaseio.com/userTasks/$userId/$id.json?auth=$token';
     try {
