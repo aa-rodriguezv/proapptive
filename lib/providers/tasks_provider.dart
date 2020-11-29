@@ -100,7 +100,6 @@ class TasksProvider with ChangeNotifier {
           'https://proapptive-a6824.firebaseio.com/userTasks/$_userID.json?auth=$_token';
       final favouriteResponse = await http.get(favURL);
       final extractedTasks = json.decode(favouriteResponse.body);
-
       extractedData.forEach(
         (key, value) {
           Task newTask = Task(
@@ -120,8 +119,11 @@ class TasksProvider with ChangeNotifier {
           );
 
           if (newTask.assignedTo) {
-            newTask.done = extractedTasks[key]['done'];
-            newTask.doneDate = DateTime.parse(extractedTasks[key]['doneDate']);
+            newTask.done = extractedTasks[key]['done'] ?? false;
+            if (extractedTasks[key]['doneDate'] != null) {
+              newTask.doneDate =
+                  DateTime.parse(extractedTasks[key]['doneDate']);
+            }
           }
 
           loadedTasks.add(newTask);
