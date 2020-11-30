@@ -5,17 +5,17 @@ class Project with ChangeNotifier {
   final String name;
   final DateTime creationDate;
   final DateTime terminationDate;
-  DateTime doneDate;
-  final String creatorEmail;
-  List<String> participantEmails;
+  final String creatorID;
   bool done;
+  bool assignedTo;
 
   Project({
     @required this.id,
     @required this.name,
     @required this.creationDate,
     @required this.terminationDate,
-    @required this.creatorEmail,
-    this.participantEmails,
+    @required this.creatorID,
+    this.done = false,
+    this.assignedTo = false,
   });
 }
