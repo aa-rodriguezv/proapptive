@@ -51,6 +51,7 @@ class _TasksCompleteOverviewScreenState
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: ListView.builder(
+                  reverse: true,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (ctx, i) {
                     return ChangeNotifierProvider.value(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proapptive/providers/auth.dart';
 import 'package:proapptive/screens/achievements_screen.dart';
 import 'package:proapptive/screens/awards_screen.dart';
+import 'package:proapptive/screens/project_overview_screen.dart';
 import 'package:proapptive/screens/tasks_complete_overview_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -52,6 +53,12 @@ class MainDrawer extends StatelessWidget {
             Icons.featured_play_list,
             'Tareas',
             TasksCompleteOverviewScreen.routeName,
+          ),
+          _buildPageAccess(
+            context,
+            Icons.card_membership,
+            'Proyectos',
+            ProjectsOverviewScreen.routeName,
           ),
           _buildPageAccess(
             context,

@@ -86,6 +86,17 @@ class TasksProvider with ChangeNotifier {
         .toList();
   }
 
+  List<Task> getAllTasksForAProject(String projectID) {
+    return tasks
+        .where(
+          (element) => element.projectName == projectID,
+        )
+        .toList()
+          ..sort(
+            (a, b) => a.terminationDate.compareTo(b.terminationDate),
+          );
+  }
+
   Future<void> fetchAndSetTasks() async {
     final url =
         'https://proapptive-a6824.firebaseio.com/tasks.json?auth=$_token';
@@ -100,7 +111,6 @@ class TasksProvider with ChangeNotifier {
           'https://proapptive-a6824.firebaseio.com/userTasks/$_userID.json?auth=$_token';
       final favouriteResponse = await http.get(favURL);
       final extractedTasks = json.decode(favouriteResponse.body);
-
       extractedData.forEach(
         (key, value) {
           Task newTask = Task(
@@ -120,8 +130,11 @@ class TasksProvider with ChangeNotifier {
           );
 
           if (newTask.assignedTo) {
-            newTask.done = extractedTasks[key]['done'];
-            newTask.doneDate = DateTime.parse(extractedTasks[key]['doneDate']);
+            newTask.done = extractedTasks[key]['done'] ?? false;
+            if (extractedTasks[key]['doneDate'] != null) {
+              newTask.doneDate =
+                  DateTime.parse(extractedTasks[key]['doneDate']);
+            }
           }
 
           loadedTasks.add(newTask);
@@ -148,7 +161,7 @@ class TasksProvider with ChangeNotifier {
       },
     );
 
-    managementBranches.removeLast();
+    //managementBranches.removeLast();
 
     return managementBranches;
   }
