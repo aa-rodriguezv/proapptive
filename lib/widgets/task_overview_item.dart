@@ -5,6 +5,10 @@ import 'package:proapptive/providers/task.dart';
 import 'package:provider/provider.dart';
 
 class TaskOverviewItem extends StatefulWidget {
+  final bool myTaskInProject;
+
+  TaskOverviewItem({this.myTaskInProject = false});
+
   @override
   _TaskOverviewItemState createState() => _TaskOverviewItemState();
 }
@@ -19,10 +23,14 @@ class _TaskOverviewItemState extends State<TaskOverviewItem> {
 
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: widget.myTaskInProject && data.assignedTo
+            ? Colors.white54
+            : Theme.of(context).primaryColor,
         child: Icon(
           Task.iconPerCategoryDict[data.type],
-          color: Colors.white,
+          color: widget.myTaskInProject && data.assignedTo
+              ? Colors.black54
+              : Colors.white,
         ),
       ),
       title: Text(
@@ -35,27 +43,31 @@ class _TaskOverviewItemState extends State<TaskOverviewItem> {
       ),
       trailing: _isLoading
           ? CircularProgressIndicator()
-          : IconButton(
-              icon: Icon(
-                data.done ? Icons.check_box : Icons.check_box_outlined,
-              ),
-              onPressed: () {
-                setState(() {
-                  _isLoading = true;
-                });
-                Provider.of<Task>(context, listen: false)
-                    .toggleDone(auth.token, auth.userId)
-                    .then(
-                  (value) {
-                    setState(
-                      () {
-                        _isLoading = false;
+          : widget.myTaskInProject && data.assignedTo
+              ? Icon(
+                  data.done ? Icons.done : Icons.close,
+                )
+              : IconButton(
+                  icon: Icon(
+                    data.done ? Icons.check_box : Icons.check_box_outline_blank,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    Provider.of<Task>(context, listen: false)
+                        .toggleDone(auth.token, auth.userId)
+                        .then(
+                      (value) {
+                        setState(
+                          () {
+                            _isLoading = false;
+                          },
+                        );
                       },
                     );
                   },
-                );
-              },
-            ),
+                ),
     );
   }
 }

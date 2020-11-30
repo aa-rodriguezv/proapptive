@@ -86,6 +86,17 @@ class TasksProvider with ChangeNotifier {
         .toList();
   }
 
+  List<Task> getAllTasksForAProject(String projectID) {
+    return tasks
+        .where(
+          (element) => element.projectName == projectID,
+        )
+        .toList()
+          ..sort(
+            (a, b) => a.terminationDate.compareTo(b.terminationDate),
+          );
+  }
+
   Future<void> fetchAndSetTasks() async {
     final url =
         'https://proapptive-a6824.firebaseio.com/tasks.json?auth=$_token';
@@ -150,7 +161,7 @@ class TasksProvider with ChangeNotifier {
       },
     );
 
-    managementBranches.removeLast();
+    //managementBranches.removeLast();
 
     return managementBranches;
   }

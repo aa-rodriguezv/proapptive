@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:proapptive/providers/auth.dart';
+import 'package:proapptive/providers/projects_provider.dart';
 import 'package:proapptive/providers/tasks_provider.dart';
 import 'package:proapptive/screens/achievements_screen.dart';
 import 'package:proapptive/screens/auth_screen.dart';
 import 'package:proapptive/screens/awards_screen.dart';
+import 'package:proapptive/screens/project_detail_screen.dart';
+import 'package:proapptive/screens/project_overview_screen.dart';
 import 'package:proapptive/screens/splash_screen.dart';
 import 'package:proapptive/screens/tasks_complete_overview_screen.dart';
 import 'package:proapptive/screens/tasks_overview_screen.dart';
@@ -30,6 +33,18 @@ class MyApp extends StatelessWidget {
             [],
           ),
           update: (context, auth, previous) => TasksProvider(
+            auth.token,
+            auth.userId,
+            previous.tasks,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, ProjectsProvider>(
+          create: (context) => ProjectsProvider(
+            '',
+            '',
+            [],
+          ),
+          update: (context, auth, previous) => ProjectsProvider(
             auth.token,
             auth.userId,
             previous.tasks,
@@ -81,6 +96,17 @@ class MyApp extends StatelessWidget {
                 fontFamily: 'OpenSans',
                 fontSize: 10,
               ),
+              headline5: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepOrangeAccent[700],
+              ),
+              headline6: TextStyle(
+                fontFamily: 'Raleway',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
           home: auth.isAuth
@@ -97,6 +123,8 @@ class MyApp extends StatelessWidget {
             AwardsScreen.routeName: (ctx) => AwardsScreen(),
             TasksCompleteOverviewScreen.routeName: (ctx) =>
                 TasksCompleteOverviewScreen(),
+            ProjectsOverviewScreen.routeName: (ctx) => ProjectsOverviewScreen(),
+            ProjectDetailScreen.routeName: (ctx) => ProjectDetailScreen(),
           },
         ),
       ),
