@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proapptive/providers/tasks_provider.dart';
 import 'package:proapptive/widgets/main_drawer.dart';
+import 'package:proapptive/widgets/stopwatch.dart';
 import 'package:proapptive/widgets/task_overview_item.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +33,8 @@ class _TasksOverviewScreenState extends State<TasksOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<TasksProvider>(context).myTasksForTheDay;
-
+    Stopwatch stopwatch1 = Stopwatch();
+    Stopwatch stopwatch2 = Stopwatch();
     return Scaffold(
       appBar: AppBar(
         title: Text('Be Proactive'),
@@ -50,6 +52,17 @@ class _TasksOverviewScreenState extends State<TasksOverviewScreen> {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
+                    Row(
+                      children: [
+                        stopwatch1,
+                        RaisedButton(onPressed: () {
+                          //stopwatch1.startTimer() ;
+                        })
+                      ],
+                    ),
+                    Row(
+                      children: [stopwatch2],
+                    ),
                     Text(
                       'Tareas para Hoy',
                       style: Theme.of(context).textTheme.headline1,
