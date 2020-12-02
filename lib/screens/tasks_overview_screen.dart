@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:proapptive/providers/tasks_provider.dart';
 import 'package:proapptive/widgets/main_drawer.dart';
@@ -33,69 +34,58 @@ class _TasksOverviewScreenState extends State<TasksOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<TasksProvider>(context).myTasksForTheDay;
-    Stopwatch stopwatch1 = Stopwatch();
-    Stopwatch stopwatch2 = Stopwatch();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Be Proactive'),
-      ),
-      drawer: MainDrawer(),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : RefreshIndicator(
-              onRefresh: () =>
-                  Provider.of<TasksProvider>(context, listen: false)
-                      .fetchAndSetTasks(),
-              child: Container(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Row(
+        appBar: AppBar(
+          title: Text('Be Proactive'),
+        ),
+        drawer: MainDrawer(),
+        body: Container(
+          child: _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : RefreshIndicator(
+                  onRefresh: () =>
+                      Provider.of<TasksProvider>(context, listen: false)
+                          .fetchAndSetTasks(),
+                  child: Container(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
                       children: [
-                        stopwatch1,
-                        RaisedButton(onPressed: () {
-                          //stopwatch1.startTimer() ;
-                        })
+                        Stopwatch(),
+                        Text(
+                          'Tareas para Hoy',
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 20, left: 10),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Siguiente tarea:',
+                            style: Theme.of(context).textTheme.headline2,
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            itemBuilder: (ctx, i) {
+                              return ChangeNotifierProvider.value(
+                                value: data[i],
+                                child: i == 0 ? NextTask() : TaskOverviewItem(),
+                              );
+                            },
+                            itemCount: data.length,
+                          ),
+                        ),
                       ],
                     ),
-                    Row(
-                      children: [stopwatch2],
-                    ),
-                    Text(
-                      'Tareas para Hoy',
-                      style: Theme.of(context).textTheme.headline1,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 20, left: 10),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Siguiente tarea:',
-                        style: Theme.of(context).textTheme.headline2,
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (ctx, i) {
-                          return ChangeNotifierProvider.value(
-                            value: data[i],
-                            child: i == 0 ? NextTask() : TaskOverviewItem(),
-                          );
-                        },
-                        itemCount: data.length,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-    );
+        ));
   }
 }
 
