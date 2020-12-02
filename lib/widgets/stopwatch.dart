@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:proapptive/providers/timer_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Stopwatch extends StatefulWidget {
   @override
@@ -27,8 +26,7 @@ class StopwatchState extends State<Stopwatch> {
 
   @override
   void initState() {
-    loadStartTime();
-    loadElapsedTimes();
+    loadTimerData();
     super.initState();
   }
 
@@ -40,24 +38,19 @@ class StopwatchState extends State<Stopwatch> {
     super.dispose();
   }
 
-  void loadStartTime() async {
+  void loadTimerData() async {
     int r = await TimerProvider.getStopwatchType();
     DateTime s = await TimerProvider.getStartTime();
-    setState(() {
-      running = r;
-      if (running != null && running != 0) {
-        startTime = s;
-        resume();
-      }
-    });
-  }
-
-  void loadElapsedTimes() async {
     Duration w = await TimerProvider.getWorkDuration();
     Duration b = await TimerProvider.getBreakDuration();
     setState(() {
       savedWorkSeconds = w;
       savedBreakSeconds = b;
+      running = r;
+      if (running != null && running != 0) {
+        startTime = s;
+        resume();
+      }
     });
   }
 
@@ -80,17 +73,20 @@ class StopwatchState extends State<Stopwatch> {
       timer.cancel();
     }
     if (running == 1) {
-      elapsedWorkSeconds += savedWorkSeconds;
-      TimerProvider.setWorkDuration(elapsedWorkSeconds + savedWorkSeconds);
+      savedWorkSeconds += elapsedWorkSeconds;
+      TimerProvider.setWorkDuration(savedWorkSeconds);
+      elapsedWorkSeconds = Duration(seconds: 0);
     } else if (running == 2) {
-      elapsedBreakSeconds += savedBreakSeconds;
-      TimerProvider.setBreakDuration(elapsedBreakSeconds + savedBreakSeconds);
+      savedBreakSeconds += elapsedBreakSeconds;
+      TimerProvider.setBreakDuration(savedBreakSeconds);
+      elapsedBreakSeconds = Duration(seconds: 0);
     }
     setState(() {
       running = 0;
     });
     startTime = null;
     TimerProvider.removeStartTime();
+    TimerProvider.setStopwatchType(0);
   }
 
   void launchTimer() {
@@ -110,15 +106,11 @@ class StopwatchState extends State<Stopwatch> {
   }
 
   String getTotalWorkSeconds() {
-    return savedWorkSeconds != null
-        ? TimerProvider.formatTime(elapsedWorkSeconds + savedWorkSeconds)
-        : TimerProvider.formatTime(elapsedWorkSeconds);
+    return TimerProvider.formatTime(elapsedWorkSeconds + savedWorkSeconds);
   }
 
   String getTotalBreakSeconds() {
-    return savedBreakSeconds != null
-        ? TimerProvider.formatTime(elapsedBreakSeconds + savedBreakSeconds)
-        : TimerProvider.formatTime(elapsedBreakSeconds);
+    return TimerProvider.formatTime(elapsedBreakSeconds + savedBreakSeconds);
   }
 
   @override
