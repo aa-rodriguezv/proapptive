@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:proapptive/providers/tasks_provider.dart';
 import 'package:proapptive/widgets/main_drawer.dart';
+import 'package:proapptive/widgets/stopwatch.dart';
 import 'package:proapptive/widgets/task_overview_item.dart';
 import 'package:provider/provider.dart';
 
@@ -32,57 +34,58 @@ class _TasksOverviewScreenState extends State<TasksOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<TasksProvider>(context).myTasksForTheDay;
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Be Proactive'),
-      ),
-      drawer: MainDrawer(),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : RefreshIndicator(
-              onRefresh: () =>
-                  Provider.of<TasksProvider>(context, listen: false)
-                      .fetchAndSetTasks(),
-              child: Container(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Text(
-                      'Tareas para Hoy',
-                      style: Theme.of(context).textTheme.headline1,
+        appBar: AppBar(
+          title: Text('Be Proactive'),
+        ),
+        drawer: MainDrawer(),
+        body: Container(
+          child: _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : RefreshIndicator(
+                  onRefresh: () =>
+                      Provider.of<TasksProvider>(context, listen: false)
+                          .fetchAndSetTasks(),
+                  child: Container(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        Stopwatch(),
+                        Text(
+                          'Tareas para Hoy',
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 20, left: 10),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Siguiente tarea:',
+                            style: Theme.of(context).textTheme.headline2,
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            itemBuilder: (ctx, i) {
+                              return ChangeNotifierProvider.value(
+                                value: data[i],
+                                child: i == 0 ? NextTask() : TaskOverviewItem(),
+                              );
+                            },
+                            itemCount: data.length,
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 20, left: 10),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Siguiente tarea:',
-                        style: Theme.of(context).textTheme.headline2,
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (ctx, i) {
-                          return ChangeNotifierProvider.value(
-                            value: data[i],
-                            child: i == 0 ? NextTask() : TaskOverviewItem(),
-                          );
-                        },
-                        itemCount: data.length,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-    );
+        ));
   }
 }
 
