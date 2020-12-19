@@ -44,10 +44,10 @@ class StopwatchState extends State<Stopwatch> {
     Duration w = await TimerProvider.getWorkDuration();
     Duration b = await TimerProvider.getBreakDuration();
     setState(() {
-      savedWorkSeconds = w;
-      savedBreakSeconds = b;
-      running = r;
-      if (running != null && running != 0) {
+      savedWorkSeconds = w != null ? w : Duration(seconds: 0);
+      savedBreakSeconds = b != null ? b : Duration(seconds: 0);
+      running = r != null ? r : 0;
+      if (running != 0) {
         startTime = s;
         resume();
       }

@@ -45,7 +45,7 @@ class MainDrawer extends StatelessWidget {
           _buildPageAccess(
             context,
             Icons.home_work,
-            'Proapptive',
+            'Inicio',
             '/',
           ),
           _buildPageAccess(
@@ -66,12 +66,12 @@ class MainDrawer extends StatelessWidget {
             'Logros',
             AchievementsScreen.routeName,
           ),
-          _buildPageAccess(
-            context,
-            Icons.local_activity,
-            'Recompensas',
-            AwardsScreen.routeName,
-          ),
+//          _buildPageAccess(
+//            context,
+//            Icons.local_activity,
+//            'Recompensas',
+//            AwardsScreen.routeName,
+//          ),
           Divider(),
           _buildPageAccess(
             context,
