@@ -94,7 +94,7 @@ class _AuthScreenState extends State<AuthScreen>
                     child: FadeTransition(
                       opacity: _imageAnimation,
                       child: Container(
-                        height: deviceSize.height * 0.35,
+                        height: deviceSize.height * 0.3,
                         padding: EdgeInsets.only(top: 50),
                         child: Image.asset(
                           'assets/images/original.png',
@@ -266,12 +266,12 @@ class _AuthCardState extends State<AuthCard>
       duration: Duration(milliseconds: 500),
       curve: Curves.easeIn,
       height: _authMode == AuthMode.Signup
-          ? deviceSize.height * 0.525
-          : deviceSize.height * 0.38,
+          ? deviceSize.height * 0.8
+          : deviceSize.height * 0.7,
       constraints: BoxConstraints(
         minHeight: _authMode == AuthMode.Signup
-            ? deviceSize.height * 0.525
-            : deviceSize.height * 0.38,
+            ? deviceSize.height * 0.8
+            : deviceSize.height * 0.7,
       ),
       margin: EdgeInsets.only(bottom: 30),
       width: deviceSize.width * 0.8,
